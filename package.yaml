@@ -1,0 +1,44 @@
+name: lamda-calculus
+version: '0.0.0'
+github: "gb/lambda-calculus"
+license: MIT
+author: "Gabe Tobias"
+maintainer: "Gabe Tobias"
+synopsis: "Lamda-Calculus Interpreter"
+description: "A simple implementation of Lamda-Calculus in Haskell"
+category: "Compilers/Interpreters"
+
+extra-source-files:
+- package.yaml
+- README.md
+- stack.yaml
+
+ghc-options: -Wall
+
+executables:
+  lamda-calculus:
+    source-dirs: src
+    main: Main.hs
+    dependencies:
+    - base
+    - mtl
+    - containers
+    - QuickCheck
+    - parsec
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+
+tests:
+  lamda-calculus-tests:
+    source-dirs: test
+    main: Main.hs
+    dependencies:
+    - base
+    - tasty
+    - tasty-hspec
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
