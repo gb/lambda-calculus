@@ -4,8 +4,8 @@ import qualified Test.Tasty
 import Test.Tasty.Hspec
 
 import LambdaCalculus.Core
-import LambdaCalculus.Lambda(allFreeVariables, freshVariable)
-import LambdaCalculus.Parse (parseLambdaTerm)
+import LambdaCalculus.Lambda(allFreeVariables, betaReduction, freshVariable)
+import LambdaCalculus.Parse (parseLambdaTerm, toString)
 
 main :: IO ()
 main = do
@@ -34,3 +34,16 @@ spec = parallel $ do
 
     it "fresh variable of ((λx.y) a b) should be c" $ do
         freshVariable (parseLambdaTerm "(\\x.y) a b") `shouldBe` Var "c"
+
+  describe "Beta Reduction" $ do
+    it "Function identity (λx.x) a should be reduced to: a" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.x) a")) `shouldBe` "a"
+
+    it "(λx.x x) a should be reduced to: a a" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.x x) a")) `shouldBe` "a a"
+
+    it "(λx.y x) a should be reduced to: y a" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.y x) a")) `shouldBe` "y a"
+
+    it "(λx.λa.x) a should be reduced to: λb.a" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.\\a.x) a")) `shouldBe` "λb.a"

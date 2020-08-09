@@ -1,4 +1,4 @@
-module LambdaCalculus.Parse (parseLambda, parseLambdaTerm) where
+module LambdaCalculus.Parse (parseLambda, parseLambdaTerm, toString) where
 
 import LambdaCalculus.Core (LambdaTerm(..), Var(..))
 import Text.Parsec
@@ -42,6 +42,11 @@ parseLambdaTerm :: String -> LambdaTerm
 parseLambdaTerm x = case parseLambda x of
                       Left _ -> Term (Var "error")
                       Right t -> t
+
+toString :: Maybe LambdaTerm -> String
+toString x = case x of
+                  Just t -> show t
+                  Nothing -> "error"
 
 term :: ParsecT String () Identity LambdaTerm
 term = liftM Term variable
