@@ -4,7 +4,7 @@ import qualified Test.Tasty
 import Test.Tasty.Hspec
 
 import LambdaCalculus.Core
-import LambdaCalculus.Lambda(allFreeVariables)
+import LambdaCalculus.Lambda(allFreeVariables, freshVariable)
 import LambdaCalculus.Parse (parseLambdaTerm)
 
 main :: IO ()
@@ -24,3 +24,13 @@ spec = parallel $ do
 
     it "allFreeVariables of ((λx.y) a) should be [y, a]" $ do
         allFreeVariables (parseLambdaTerm "(\\x.y) a") `shouldBe` [(Var "y"), (Var "a")]
+
+  describe "Fresh Variable" $ do
+    it "fresh variable of x should be a" $ do
+        freshVariable (parseLambdaTerm "x") `shouldBe` Var "a"
+
+    it "fresh variable of ((λx.y) a) should be b" $ do
+        freshVariable (parseLambdaTerm "(\\x.y) a") `shouldBe` Var "b"
+
+    it "fresh variable of ((λx.y) a b) should be c" $ do
+        freshVariable (parseLambdaTerm "(\\x.y) a b") `shouldBe` Var "c"
