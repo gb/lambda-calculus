@@ -1,6 +1,6 @@
 module LambdaCalculus.Parse (parseLambda, parseLambdaTerm) where
 
-import LambdaCalculus.Lambda (LambdaTerm(..), Var(..))
+import LambdaCalculus.Core (LambdaTerm(..), Var(..))
 import Text.Parsec
 import Data.Functor.Identity
 import Control.Monad (liftM)

@@ -3,7 +3,8 @@ import qualified Test.Tasty
 -- Hspec is one of the providers for Tasty. It provides a nice syntax for writing tests. <https://hspec.github.io>
 import Test.Tasty.Hspec
 
-import LambdaCalculus.Lambda
+import LambdaCalculus.Core
+import LambdaCalculus.Lambda(allFreeVariables)
 import LambdaCalculus.Parse (parseLambdaTerm)
 
 main :: IO ()
