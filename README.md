@@ -21,7 +21,7 @@ cd lambda-calculus
 make run
 ```
 
-## Examples
+## Example
 ```
 Please type a lambda expression:
 λ> (\x.x) a
