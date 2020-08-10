@@ -38,7 +38,6 @@ lambdaExpressionParse :: ParsecT String () Identity LambdaTerm
 lambdaExpressionParse = try termParse
     <|> (try $ between (char '(') (char ')') applicationParse)
     <|> abstractionParse
-    <?> "lambda expression"
 
 termParse :: ParsecT String () Identity LambdaTerm
 termParse = liftM Term variableParse
@@ -49,7 +48,7 @@ variableParse = do
   return t
 
 parseLambda :: String -> Either ParseError LambdaTerm
-parseLambda = parse applicationParse "(lambda)"
+parseLambda = parse applicationParse "(λ)"
 
 parseLambdaTerm :: String -> LambdaTerm
 parseLambdaTerm x = case parseLambda x of
