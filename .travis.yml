@@ -1,10 +1,9 @@
 sudo: false
+language: haskell
 
 cache:
   directories:
-    - $HOME/.stack
-
-language: haskell
+  - $HOME/.stack
 
 before_install:
   - mkdir -p ~/.local/bin
