@@ -16,10 +16,10 @@ repl :: InputT IO ()
 repl = do
   term <- getInputLine "λ> "
   case term of
-    Nothing -> return ()
     Just lambdaTerm -> do
       evaluate lambdaTerm
       repl
+    Nothing -> return ()
 
 evaluate :: MonadIO m => String -> InputT m ()
 evaluate term = case parseLambda term of

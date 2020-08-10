@@ -52,8 +52,8 @@ parseLambda = parse applicationParse "(λ)"
 
 parseLambdaTerm :: String -> LambdaTerm
 parseLambdaTerm x = case parseLambda x of
-  Left _ -> Term ("error")
   Right t -> t
+  Left _ -> Term "error"
 
 toString :: Maybe LambdaTerm -> String
 toString x = case x of
