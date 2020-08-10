@@ -2,8 +2,8 @@ import qualified Test.Tasty
 import Test.Tasty.Hspec
 
 import LambdaCalculus.Core
-import LambdaCalculus.Eval(allFreeVariables, betaReduction, freshVariable)
-import LambdaCalculus.Parse (parseLambdaTerm, toString)
+import LambdaCalculus.Eval
+import LambdaCalculus.Parse
 
 main :: IO ()
 main = do
@@ -15,23 +15,23 @@ spec = parallel $ do
 
   describe "Free Variables" $ do
     it "free variables of x should be x" $ do
-        allFreeVariables (parseLambdaTerm "x") `shouldBe` [(Var "x")]
+        allFreeVariables (parseLambdaTerm "x") `shouldBe` ["x"]
 
     it "free variables of λx.y should be y" $ do
-        allFreeVariables (parseLambdaTerm "\\x.y") `shouldBe` [(Var "y")]
+        allFreeVariables (parseLambdaTerm "\\x.y") `shouldBe` ["y"]
 
     it "allFreeVariables of ((λx.y) a) should be [y, a]" $ do
-        allFreeVariables (parseLambdaTerm "(\\x.y) a") `shouldBe` [(Var "y"), (Var "a")]
+        allFreeVariables (parseLambdaTerm "(\\x.y) a") `shouldBe` ["y", "a"]
 
   describe "Fresh Variable" $ do
     it "fresh variable of x should be a" $ do
-        freshVariable (parseLambdaTerm "x") `shouldBe` Var "a"
+        freshVariable (parseLambdaTerm "x") `shouldBe` "a"
 
     it "fresh variable of ((λx.y) a) should be b" $ do
-        freshVariable (parseLambdaTerm "(\\x.y) a") `shouldBe` Var "b"
+        freshVariable (parseLambdaTerm "(\\x.y) a") `shouldBe` "b"
 
     it "fresh variable of ((λx.y) a b) should be c" $ do
-        freshVariable (parseLambdaTerm "(\\x.y) a b") `shouldBe` Var "c"
+        freshVariable (parseLambdaTerm "(\\x.y) a b") `shouldBe` "c"
 
   describe "Beta Reduction" $ do
     it "Function identity (λx.x) a should be reduced to: a" $ do

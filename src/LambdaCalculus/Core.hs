@@ -1,16 +1,15 @@
 module LambdaCalculus.Core
 (
-  Var(..),
+  Ide,
   LambdaTerm(..),
 ) where
 
-data Var = Var String deriving Eq
-data LambdaTerm = Var :-> LambdaTerm -- Abstraction
+type Ide = String
+data LambdaTerm = Ide :-> LambdaTerm -- Abstraction
             | LambdaTerm :$ LambdaTerm -- Application
-            | Term Var -- Variable
+            | Term Ide -- Variable
 
-instance Show Var where show (Var x) = x
 instance Show LambdaTerm where
-  show (v :-> t) = "(λ" ++ show v ++ "." ++ show t ++ ")"
+  show (v :-> t) = "(λ" ++ v ++ "." ++ show t ++ ")"
   show (t1 :$ t2) = "(" ++ show t1 ++ " " ++ show t2 ++ ")"
-  show (Term v) = show v
+  show (Term v) = v

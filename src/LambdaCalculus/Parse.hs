@@ -1,6 +1,6 @@
 module LambdaCalculus.Parse (parseLambda, parseLambdaTerm, toString) where
 
-import LambdaCalculus.Core (LambdaTerm(..), Var(..))
+import LambdaCalculus.Core (Ide, LambdaTerm(..))
 import Text.Parsec
 import Data.Functor.Identity
 import Control.Monad
@@ -38,17 +38,17 @@ lambdaExpressionParse = try termParse
 termParse :: ParsecT String () Identity LambdaTerm
 termParse = liftM Term variableParse
 
-variableParse :: ParsecT String () Identity Var
+variableParse :: ParsecT String () Identity Ide
 variableParse = do
   t <- many1 (noneOf "()λ\\,. \n\t")
-  return (Var t)
+  return t
 
 parseLambda :: String -> Either ParseError LambdaTerm
 parseLambda = parse applicationParse "(lambda)"
 
 parseLambdaTerm :: String -> LambdaTerm
 parseLambdaTerm x = case parseLambda x of
-                      Left _ -> Term (Var "error")
+                      Left _ -> Term ("error")
                       Right t -> t
 
 toString :: Maybe LambdaTerm -> String
