@@ -4,7 +4,7 @@ import qualified Test.Tasty
 import Test.Tasty.Hspec
 
 import LambdaCalculus.Core
-import LambdaCalculus.Lambda(allFreeVariables, betaReduction, freshVariable)
+import LambdaCalculus.Eval(allFreeVariables, betaReduction, freshVariable)
 import LambdaCalculus.Parse (parseLambdaTerm, toString)
 
 main :: IO ()

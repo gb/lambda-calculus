@@ -1,4 +1,4 @@
-module LambdaCalculus.Lambda
+module LambdaCalculus.Eval
 (
   allFreeVariables,
   betaReduction,
