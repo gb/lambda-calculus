@@ -1,4 +1,9 @@
-module LambdaCalculus.Parse (parseLambda, parseLambdaTerm, toString) where
+module LambdaCalculus.Parse
+(
+  parseLambda,
+  parseLambdaTerm,
+  toString
+) where
 
 import LambdaCalculus.Core (Ide, LambdaTerm(..))
 import Text.Parsec

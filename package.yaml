@@ -19,10 +19,17 @@ library:
   source-dirs: src
   dependencies:
     - base
-    - mtl
-    - containers
     - parsec
     - haskeline
+
+executables:
+  lambda:
+    main: Main.hs
+    source-dirs: src
+    dependencies:
+      - base
+      - parsec
+      - haskeline
 
 tests:
   lambda-calculus-tests:
