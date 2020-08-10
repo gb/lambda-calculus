@@ -42,4 +42,4 @@ freshVariable t = head (variables \\ terms t)
   where variables = map (\x -> [x]) (['a'..'z'] ++ ['A'..'Z'])
         terms (Term v) = [v]
         terms (t1 :$ t2) = terms t1 `union` terms t2
-        terms (v :-> t)  = terms t `union` [v]
+        terms (v :-> t2)  = terms t2 `union` [v]
