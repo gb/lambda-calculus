@@ -1,7 +1,6 @@
 import qualified Test.Tasty
 import Test.Tasty.Hspec
 
-import LambdaCalculus.Core
 import LambdaCalculus.Eval
 import LambdaCalculus.Parse
 
@@ -51,3 +50,6 @@ spec = parallel $ do
 
     it "(λx.(λy.y) x) a should be reduced to: ((λy.y) a)" $ do
         toString (betaReduction (parseLambdaTerm "(\\x.(\\y.y)x) a")) `shouldBe` "((λy.y) a)"
+
+    it "α capture - remove name clashes in expressions" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.\\a.x) a")) `shouldBe` "(λb.a)"
