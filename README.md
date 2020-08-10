@@ -1,4 +1,4 @@
-# Lambda Calculus
+# Lambda Calculus [![Build Status](https://travis-ci.com/gb/lambda-calculus.svg?branch=master)](https://travis-ci.com/gb/lambda-calculus)
 An extremely simple implementation of Lambda-Calculus Interpreter.
 
 
