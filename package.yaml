@@ -5,7 +5,7 @@ license: MIT
 author: "Gabe Tobias"
 maintainer: "Gabe Tobias"
 synopsis: "Tiny Lambda-Calculus Interpreter"
-description: "An extremely simple implementation of Lambda-Calculus in Haskell"
+description: "An extremely simple implementation of Lambda-Calculus Interpreter in Haskell"
 category: "Compilers/Interpreters"
 
 extra-source-files:
