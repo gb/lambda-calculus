@@ -5,8 +5,8 @@ module LambdaCalculus.Eval
   freshVariable
 ) where
 
-import Control.Monad (mplus)
-import Data.List (union, (\\))
+import Control.Monad
+import Data.List
 import LambdaCalculus.Core (LambdaTerm(..), Var(..))
 
 -- The set of all free variables of a lambda term
@@ -21,17 +21,17 @@ betaReduction (Term _) = Nothing
 betaReduction (x :-> t) = betaReduction t >>= (\r -> return (x :-> r))
 betaReduction ((x :-> t1) :$ t2) = Just $ substitution x t2 t1
 betaReduction (t1 :$ t2) = (betaReduction t1 >>= (\r1 -> return (r1 :$ t2)))
-                `mplus` (betaReduction t2 >>= (\r2 -> return (t1 :$ r2)))
+                   `mplus` (betaReduction t2 >>= (\r2 -> return (t1 :$ r2)))
 
 -- Replace all free occurrences of a variable in an term with another term
 substitution :: Var -> LambdaTerm -> LambdaTerm -> LambdaTerm
-substitution x n m@(Term y)
+substitution x n (Term y)
   | x == y = n
-  | otherwise = m
+  | otherwise = Term y
 substitution x n (t1 :$ t2) = substitution x n t1 :$ substitution x n t2
-substitution x n @m(y :-> t)
-  | x == y = m
-  | x `notElem` allFreeVariables t = m
+substitution x n (y :-> t)
+  | x == y = y :-> t
+  | x `notElem` allFreeVariables t = y :-> t
   | y `notElem` allFreeVariables n = y :-> substitution x n t
   | otherwise = z :-> substitution x n (substitution y (Term z) t)
     where z = freshVariable (n :$ t)
@@ -42,4 +42,4 @@ freshVariable t = head (variables \\ terms t)
   where variables = map (\x -> Var [x]) (['a'..'z'] ++ ['A'..'Z'])
         terms (Term v) = [v]
         terms (t1 :$ t2) = terms t1 `union` terms t2
-        terms (v :-> l)  = terms l `union` [v]
+        terms (v :-> t)  = terms t `union` [v]

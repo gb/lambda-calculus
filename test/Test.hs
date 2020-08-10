@@ -1,6 +1,4 @@
--- Tasty makes it easy to test and allow combine many different types of tests into one suite. <http://documentup.com/feuerbach/tasty>
 import qualified Test.Tasty
--- Hspec is one of the providers for Tasty. It provides a nice syntax for writing tests. <https://hspec.github.io>
 import Test.Tasty.Hspec
 
 import LambdaCalculus.Core
@@ -39,11 +37,17 @@ spec = parallel $ do
     it "Function identity (λx.x) a should be reduced to: a" $ do
         toString (betaReduction (parseLambdaTerm "(\\x.x) a")) `shouldBe` "a"
 
-    it "(λx.x x) a should be reduced to: a a" $ do
-        toString (betaReduction (parseLambdaTerm "(\\x.x x) a")) `shouldBe` "a a"
+    it "(λx.x x) a should be reduced to: (a a)" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.x x) a")) `shouldBe` "(a a)"
 
-    it "(λx.y x) a should be reduced to: y a" $ do
-        toString (betaReduction (parseLambdaTerm "(\\x.y x) a")) `shouldBe` "y a"
+    it "(λx.y x) a should be reduced to: (y a)" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.y x) a")) `shouldBe` "(y a)"
 
-    it "(λx.λa.x) a should be reduced to: λb.a" $ do
-        toString (betaReduction (parseLambdaTerm "(\\x.\\a.x) a")) `shouldBe` "λb.a"
+    it "(λx.λa.x) a should be reduced to: (λb.a)" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.\\a.x) a")) `shouldBe` "(λb.a)"
+
+    it "(λx.λx.x) a should be reduced to: (λx.x)" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.\\x.x) a")) `shouldBe` "(λx.x)"
+
+    it "(λx.(λy.y) x) a should be reduced to: ((λy.y) a)" $ do
+        toString (betaReduction (parseLambdaTerm "(\\x.(\\y.y)x) a")) `shouldBe` "((λy.y) a)"

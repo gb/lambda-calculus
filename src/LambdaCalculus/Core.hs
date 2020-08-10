@@ -11,6 +11,6 @@ data LambdaTerm = Var :-> LambdaTerm -- Abstraction
 
 instance Show Var where show (Var x) = x
 instance Show LambdaTerm where
-  show (v :-> t) = "λ" ++ show v ++ "." ++ show t
-  show (t1 :$ t2) = show t1 ++ " " ++ show t2
+  show (v :-> t) = "(λ" ++ show v ++ "." ++ show t ++ ")"
+  show (t1 :$ t2) = "(" ++ show t1 ++ " " ++ show t2 ++ ")"
   show (Term v) = show v

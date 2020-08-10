@@ -3,40 +3,48 @@ module LambdaCalculus.Parse (parseLambda, parseLambdaTerm, toString) where
 import LambdaCalculus.Core (LambdaTerm(..), Var(..))
 import Text.Parsec
 import Data.Functor.Identity
-import Control.Monad (liftM)
+import Control.Monad
 
-abstraction :: ParsecT String () Identity LambdaTerm
-abstraction = do
+abstractionParse :: ParsecT String () Identity LambdaTerm
+abstractionParse = do
   _ <- oneOf "λ\\"
   skipMany space
-  vars <- variable `sepBy` commaSeparated
+  vars <- variableParse `sepBy` commaSeparatedParse
   skipMany space
   _ <- char '.'
   skipMany space
-  body <- application
+  body <- applicationParse
   return (foldr (:->) body vars)
 
-application :: ParsecT String () Identity LambdaTerm
-application = do
+applicationParse :: ParsecT String () Identity LambdaTerm
+applicationParse = do
   skipMany space
-  expression <- lambdaExpression `endBy` (many space)
+  expression <- lambdaExpressionParse `endBy` (many space)
   skipMany space
   return (foldl1 (:$) expression)
 
-commaSeparated :: ParsecT String () Identity ()
-commaSeparated = do
+commaSeparatedParse :: ParsecT String () Identity ()
+commaSeparatedParse = do
   skipMany space
   _ <- char ','
   skipMany space
 
-lambdaExpression :: ParsecT String () Identity LambdaTerm
-lambdaExpression = try term
-    <|> (try $ between (char '(') (char ')') application)
-    <|> abstraction
+lambdaExpressionParse :: ParsecT String () Identity LambdaTerm
+lambdaExpressionParse = try termParse
+    <|> (try $ between (char '(') (char ')') applicationParse)
+    <|> abstractionParse
     <?> "lambda expression"
 
+termParse :: ParsecT String () Identity LambdaTerm
+termParse = liftM Term variableParse
+
+variableParse :: ParsecT String () Identity Var
+variableParse = do
+  t <- many1 (noneOf "()λ\\,. \n\t")
+  return (Var t)
+
 parseLambda :: String -> Either ParseError LambdaTerm
-parseLambda = parse application "(lambda)"
+parseLambda = parse applicationParse "(lambda)"
 
 parseLambdaTerm :: String -> LambdaTerm
 parseLambdaTerm x = case parseLambda x of
@@ -47,11 +55,3 @@ toString :: Maybe LambdaTerm -> String
 toString x = case x of
                   Just t -> show t
                   Nothing -> "error"
-
-term :: ParsecT String () Identity LambdaTerm
-term = liftM Term variable
-
-variable :: ParsecT String () Identity Var
-variable = do
-  t <- many1 (noneOf "()λ\\,. \n\t")
-  return (Var t)
